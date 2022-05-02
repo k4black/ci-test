@@ -1,0 +1,14 @@
+name: Publish
+
+on:
+  release:
+    types:
+      - published
+
+
+jobs:
+  update-verstion-and-chengelog:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "published"

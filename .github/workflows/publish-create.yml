@@ -1,0 +1,14 @@
+name: Create
+
+on:
+  release:
+    types:
+      - created
+
+
+jobs:
+  update-verstion-and-chengelog:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "created"

@@ -1,0 +1,14 @@
+name: Released
+
+on:
+  release:
+    types:
+      - released
+
+
+jobs:
+  update-verstion-and-chengelog:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "released"

@@ -1,0 +1,14 @@
+name: Pre-Released
+
+on:
+  release:
+    types:
+      - prereleased
+
+
+jobs:
+  update-verstion-and-chengelog:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "prereleased"
