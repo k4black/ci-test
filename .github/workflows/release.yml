@@ -1,0 +1,48 @@
+name: Release
+
+on:
+  release:
+    types:
+      - published
+
+
+jobs:
+  update-version-and-changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref_name }}
+      - name: Update version file
+        run: |
+          touch VERSION
+          cat VERSION
+          echo "VERSION ${{ github.ref_name }}"
+          echo -n "${{ github.ref_name }}" > VERSION
+      - name: Update changelog file
+        run: |
+          echo "CHANGELOG"
+      - name: Commit updated files
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@users.noreply.github.com'
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git add VERSION CHANGELOG.md
+          git commit -m "Auto version and changelog update [${{ github.ref_name }}]"
+      - name: Tag new commit and push
+        run: |
+          git tag --force ${{ github.ref_name }}
+          git push origin
+#          git push origin ${{ github.ref_name }} --force
+
+  update-release-github:
+    needs: update-version-and-changelog
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref_name }}
+      - name: Update Release description
+        run: |
+          echo "VERSION"
+          echo "CHANGELOG"
